@@ -1,30 +1,30 @@
 {
-  "name": "electron-native-notification",
-  "version": "1.0.0",
-  "description": "Display notifications from the electron main process",
-  "main": "index.js",
-  "scripts": {
-    "test": ""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/ALiangLiang/electron-native-notification.git"
-  },
-  "keywords": [
-    "electron",
-    "desktop",
-    "native",
-    "desktop",
-    "notification",
-    "notifications",
-    "main",
-    "polyfill",
-    "process"
-  ],
-  "author": "ALiangLiang <david27072183@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ALiangLiang/electron-native-notification/issues"
-  },
-  "homepage": "https://github.com/ALiangLiang/electron-native-notification#readme"
+    "name": "electron-native-notification",
+    "version": "1.0.0",
+    "description": "Notification API polyfill in electron main process.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"no test script~\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/ALiangLiang/electron-native-notification.git"
+    },
+    "keywords": [
+        "electron",
+        "desktop",
+        "native",
+        "desktop",
+        "notification",
+        "notifications",
+        "main",
+        "polyfill",
+        "process"
+    ],
+    "author": "ALiangLiang <david27072183@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ALiangLiang/electron-native-notification/issues"
+    },
+    "homepage": "https://github.com/ALiangLiang/electron-native-notification#readme"
 }
