@@ -15,7 +15,7 @@ Actually really easy to use:
 
 ```javascript
 const { app } = require('electron');
-const Notification = require('electron-main-notification');
+const Notification = require('electron-native-notification');
 
 app.on('ready', () => {
 
