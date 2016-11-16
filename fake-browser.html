@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        const {
+            ipcRenderer,
+        } = require('electron');
+
+        let notification;
+
+        ipcRenderer.on('display-notification', (event, arg) => {
+            notification = new Notification(arg.title, arg.opts);
+            notification.onclick = () => ipcRenderer.send('display-notification-onclick', arg.uuid);
+            notification.onshow = () => ipcRenderer.send('display-notification-onshow', arg.uuid);
+            notification.onclose = () => ipcRenderer.send('display-notification-onclose', arg.uuid);
+            notification.onerror = () => ipcRenderer.send('display-notification-onerror', arg.uuid);
+        })
+
+        ipcRenderer.on('close-notification', (event, arg) => {
+            if (notification)
+                notification.close();
+        })
+    </script>
+</body>
+
+</html>
