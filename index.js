@@ -5,7 +5,10 @@ const {
   EventEmitter = require('events'),
   path = require('path');
 
-var window = null;
+/* Coz this module will add listener to global ipcMain, so increase ipcMain limit of listener to 100 even more. */
+ipcMain.setMaxListeners(100);
+
+let window = null;
 
 function genUuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -20,10 +23,8 @@ class Notification extends EventEmitter {
   constructor(title, opts) {
     super();
 
+    /* Used to identity the event is trigger by self. */
     let uuid;
-
-    this.onclick = function() {};
-    this.onerror = function() {};
 
     this._title = opts.title;
     this._tag = opts.tag;
@@ -33,6 +34,9 @@ class Notification extends EventEmitter {
     this._dir = opts.dir;
     this._icon = opts.icon;
     this._timestamp = opts.timestamp;
+
+    this._onclick = null;
+    this._onerror = null;
 
     window = new BrowserWindow({
       show: false,
@@ -49,7 +53,6 @@ class Notification extends EventEmitter {
 
     ipcMain.on('display-notification-onclick', (event, returnUuid) => {
       if (uuid === returnUuid) {
-        this.onclick();
         this.emit('click');
       }
     });
@@ -65,15 +68,41 @@ class Notification extends EventEmitter {
     });
 
     ipcMain.on('display-notification-onerror', (event, returnUuid, err) => {
-      if (uuid === returnUuid) {
-        this.onerror(err);
+      if (uuid === returnUuid)
         this.emit('error', err);
-      }
     });
   }
 
   close() {
     window.webContents.send('close-notification');
+  }
+
+  set onclick(callback) {
+    if (typeof callback !== 'function')
+      callback = null;
+    if (typeof this._onclick === 'function')
+      this.removeListener('click', this._onclick); /* remove last listener. */
+    this._onclick = callback; /* replace trigger function. */
+    if (typeof callback === 'function')
+      this.on('click', this._onclick);
+  }
+
+  get onclick() {
+    return this._onclick;
+  }
+
+  set onerror(callback) {
+    if (typeof callback !== 'function')
+      callback = null;
+    if (typeof this._onerror === 'function')
+      this.removeListener('error', this._onerror); /* remove last listener. */
+    this._onerror = callback; /* replace trigger function. */
+    if (typeof callback === 'function')
+      this.on('error', callback);
+  }
+
+  get onerror() {
+    return this._onerror;
   }
 
   get title() {
@@ -109,6 +138,4 @@ class Notification extends EventEmitter {
   }
 }
 
-module.exports = Notification; {
-  return this._timestamp;
-}
+module.exports = Notification;

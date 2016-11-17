@@ -13,6 +13,8 @@ However, it's a polyfill from https://developer.mozilla.org/en-US/docs/Web/API/n
 
 Actually really easy to use:
 
+main.js:
+
 ```javascript
 const { app } = require('electron');
 const Notification = require('electron-native-notification');

@@ -1,83 +1,96 @@
-const Notification = require('./../index.js');
-let notification;
+const
+  assert = require('assert'),
+  Notification = require('./../index.js'),
+  {
+    ipcMain,
+  } = require('electron');
 
-describe('module launch', function() {
+describe('Event test.', function() {
   this.timeout(10000);
+
+  let notification;
 
   afterEach(function() {
     notification.close();
     notification = undefined;
   });
 
-  it('create a notification and trigger \'show\' event.', function(done) {
-    notification = new Notification('create a notification and trigger \'show\' event.', {
-      body: 'I\'m tester.'
-    });
+  describe('show', function() {
+    it('Create a notification and trigger \'show\' event.', function(done) {
+      notification = new Notification('create a notification and trigger \'show\' event.', {
+        body: 'I\'m tester.',
+      });
 
-    notification.on('show', () => {
-      setTimeout(() => done(), 500);
-    });
-  });
-
-  it('trigger \'close\' event.', function(done) {
-    notification = new Notification('trigger \'close\' event.', {
-      body: 'I\'m tester.'
-    });
-
-    notification.on('close', () => {
-      setTimeout(() => done(), 500);
+      notification.on('show', () => setTimeout(() => done(), 500));
     });
   });
 
-  it('test \'close\' method.', function(done) {
-    notification = new Notification('test \'close\' method.', {
-      body: 'I\'m tester.'
+  describe('close', function() {
+    it('Trigger \'close\' event.', function(done) {
+      notification = new Notification('trigger \'close\' event.', {
+        body: 'I\'m tester.',
+      });
+
+      notification.on('close', () => setTimeout(() => done(), 500));
     });
 
-    setTimeout(() => notification.close(), 1000);
+    it('Test \'close\' method.', function(done) {
+      notification = new Notification('test \'close\' method.', {
+        body: 'I\'m tester.',
+      });
 
-    notification.on('close', () => {
-      setTimeout(() => done(), 500);
-    });
-  });
+      setTimeout(() => notification.close(), 1000);
 
-  it('trigger \'click\' event.', function(done) {
-    notification = new Notification('trigger \'click\' event.', {
-      body: 'I\'m tester.'
-    });
-
-    setTimeout(() => notification.emit('click'), 1000);
-
-    notification.on('click', () => {
-      setTimeout(() => done(), 500);
+      notification.on('close', () => setTimeout(() => done(), 500));
     });
   });
 
-  it('trigger \'onclick\' property.', function(done) {
-    notification = new Notification('trigger \'onclick\' property.', {
-      body: 'I\'m tester.'
-    });
+  const eventTypes = [{
+    type: 'click',
+  }, {
+    type: 'error',
+  }, ];
 
-    setTimeout(() => notification.emit('click'), 1000);
+  eventTypes.forEach((test) => {
 
-    notification.onclick = function() {
-      setTimeout(() => done(), 500);
-    };
-  });
+    describe(test.type, function() {
+      it(`Trigger '${test.type}' event.`, function(done) {
+        notification = new Notification(`trigger '${test.type}' event.`, {
+          body: 'I\'m tester.',
+        });
 
-  it('trigger \'error\' event.', function(done) {
-    notification = new Notification('trigger \'error\' event.', {
-      body: 'I\'m tester.'
-    });
+        setTimeout(() => notification.emit(test.type), 1000);
 
-    setTimeout(() => notification.emit('error', new Error()), 1000);
+        notification.on(test.type, () => setTimeout(() => done(), 500));
+      });
 
-    notification.on('error', () => {
-      setTimeout(() => done(), 500);
+      it(`Trigger 'on${test.type}' property.`, function(done) {
+        notification = new Notification(`trigger 'on${test.type}' property.`, {
+          body: 'I\'m tester.',
+        });
+
+        setTimeout(() => notification.emit(test.type), 1000);
+
+        notification[`on${test.type}`] = () => setTimeout(() => done(), 500);
+      });
+
+      it(`Assign and get 'on${test.type}' property.`, function() {
+        notification = new Notification(`assign and get 'on${test.type}' property.`, {
+          body: 'I\'m tester.',
+        });
+
+        setTimeout(() => ipcMain.emit('display-notification-onclick'), 1000);
+
+        const callback = function() {};
+        notification[`on${test.type}`] = callback;
+        assert(notification[`on${test.type}`] === callback);
+      });
     });
   });
 
   after(function() {
-    process.exit();
+    /* I don't know why I need more times to exit the process.*/
+    process.exit(0);
+    process.exit(0);
   });
 });
