@@ -1,1 +1,1 @@
-NODE_ENV=development $(npm bin)/electron-mocha tests/
+$(npm bin)/electron-mocha tests/
