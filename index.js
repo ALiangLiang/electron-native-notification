@@ -1,28 +1,30 @@
 const {
+  app,
   ipcMain,
   BrowserWindow,
 } = require('electron'),
   EventEmitter = require('events'),
-  path = require('path');
+  path = require('path'),
+  genUuid = require('./uuid');
 
 /* Coz this module will add listener to global ipcMain, so increase ipcMain limit of listener to 100 even more. */
 ipcMain.setMaxListeners(100);
 
 /* Initial fake browser. */
-let isWindowReady = false;
-const window = new BrowserWindow({
-  show: false,
-});
-window.webContents.loadURL('file://' + path.join(__dirname, '/fake-browser.html'));
-
-function genUuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const
-      r = Math.random() * 16 | 0,
-      v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  })
+let
+  isWindowReady = false,
+  window;
+const createFakeBrowser = () => {
+  window = new BrowserWindow({
+    show: false,
+  });
+  window.webContents.loadURL('file://' + path.join(__dirname, '/fake-browser.html'));
+  window.on('ready-to-show', () => isWindowReady = true);
 }
+if (!app.isReady())
+  app.on('ready', () => createFakeBrowser());
+else
+  createFakeBrowser()
 
 class Notification extends EventEmitter {
   constructor(title, opts) {
@@ -49,10 +51,7 @@ class Notification extends EventEmitter {
       uuid: uuid,
     });
     if (!isWindowReady)
-      window.on('ready-to-show', () => {
-        sendMsg();
-        isWindowReady = true;
-      });
+      window.on('ready-to-show', () => sendMsg());
     else
       sendMsg();
 
