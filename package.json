@@ -4,7 +4,7 @@
     "description": "Notification API polyfill in electron main process.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"no test script~\""
+        "test": "sh tests/test.sh"
     },
     "repository": {
         "type": "git",
@@ -26,5 +26,9 @@
     "bugs": {
         "url": "https://github.com/ALiangLiang/electron-native-notification/issues"
     },
-    "homepage": "https://github.com/ALiangLiang/electron-native-notification#readme"
+    "homepage": "https://github.com/ALiangLiang/electron-native-notification#readme",
+    "devDependencies": {
+        "electron-prebuilt": "^1.4.6",
+        "mocha": "^3.1.2"
+    }
 }

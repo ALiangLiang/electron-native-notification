@@ -36,8 +36,8 @@ class Notification extends EventEmitter {
 
     window = new BrowserWindow({
       show: false,
-    })
-    window.loadURL('file://' + path.join(__dirname, '/fake-browser.html'))
+    });
+    window.loadURL('file://' + path.join(__dirname, '/fake-browser.html'));
     window.on('ready-to-show', () => {
       uuid = genUuid();
       window.webContents.send('display-notification', {
@@ -45,31 +45,31 @@ class Notification extends EventEmitter {
         opts: opts,
         uuid: uuid,
       });
-    })
+    });
 
     ipcMain.on('display-notification-onclick', (event, returnUuid) => {
       if (uuid === returnUuid) {
         this.onclick();
         this.emit('click');
       }
-    })
+    });
 
     ipcMain.on('display-notification-onshow', (event, returnUuid) => {
       if (uuid === returnUuid)
         this.emit('show');
-    })
+    });
 
     ipcMain.on('display-notification-onclose', (event, returnUuid) => {
       if (uuid === returnUuid)
         this.emit('close');
-    })
+    });
 
-    ipcMain.on('display-notification-onerror', (event, returnUuid) => {
+    ipcMain.on('display-notification-onerror', (event, returnUuid, err) => {
       if (uuid === returnUuid) {
-        this.onerror();
-        this.emit('error');
+        this.onerror(err);
+        this.emit('error', err);
       }
-    })
+    });
   }
 
   close() {
@@ -109,4 +109,6 @@ class Notification extends EventEmitter {
   }
 }
 
-module.exports = Notification;
+module.exports = Notification; {
+  return this._timestamp;
+}

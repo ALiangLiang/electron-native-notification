@@ -20,13 +20,13 @@
             notification.onclick = () => ipcRenderer.send('display-notification-onclick', arg.uuid);
             notification.onshow = () => ipcRenderer.send('display-notification-onshow', arg.uuid);
             notification.onclose = () => ipcRenderer.send('display-notification-onclose', arg.uuid);
-            notification.onerror = () => ipcRenderer.send('display-notification-onerror', arg.uuid);
-        })
+            notification.onerror = (err) => ipcRenderer.send('display-notification-onerror', arg.uuid, err);
+        });
 
         ipcRenderer.on('close-notification', (event, arg) => {
             if (notification)
                 notification.close();
-        })
+        });
     </script>
 </body>
 

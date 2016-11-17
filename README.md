@@ -19,21 +19,21 @@ const Notification = require('electron-native-notification');
 
 app.on('ready', () => {
 
-  const notification = new Notification('This is a notification!', { body: 'See? Really easy to use!' }, () => {
-    console.log('The notification got clicked on!');
-  });
+  const notification = new Notification('This is a notification!', { body: 'See? Really easy to use!' });
 
   notification.onclick = () => {
     console.log('The notification is be clicked!');
   };
 
-  notification.on('error', () => {
-    console.log('Oh no! An error occurred.');
+  notification.on('close', () => {
+    console.log('notification: Plz don\'t close me. T_T');
   });
 
   console.log('What the notification just say? ' + notification.body);
 
-})
+  setTimeout(() => notification.close(), 2000);
+
+});
 ```
 
 ## Polyfill what?
