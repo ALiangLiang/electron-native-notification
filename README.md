@@ -7,13 +7,13 @@ Easily display native desktop applications from your Electron main process.
 Because Notifications use the HTML 5 Notification API, this usually only works
 from renderer processes.
 
-However, it's a polyfill from https://developer.mozilla.org/en-US/docs/Web/API/notification .
+However, it's a polyfill from https://developer.mozilla.org/en-US/docs/Web/API/notification.
 
 ## Usage
 
-Actually really easy to use:
+Actually really easy to use.
 
-main.js:
+#### main.js:
 
 ```javascript
 const { app } = require('electron');
@@ -63,3 +63,6 @@ app.on('ready', () => {
  - click
  - close
  - show
+
+## License
+MIT

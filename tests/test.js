@@ -90,7 +90,7 @@ describe('Event test.', function() {
 
   after(function() {
     /* I don't know why I need more times to exit the process.*/
-    process.exit(0);
-    process.exit(0);
+    setTimeout(() => process.exit(0), 500);
+    setTimeout(() => process.exit(0), 1000);
   });
 });

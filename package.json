@@ -22,7 +22,7 @@
         "process"
     ],
     "author": "ALiangLiang <david27072183@gmail.com>",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/ALiangLiang/electron-native-notification/issues"
     },

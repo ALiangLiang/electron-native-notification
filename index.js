@@ -8,7 +8,12 @@ const {
 /* Coz this module will add listener to global ipcMain, so increase ipcMain limit of listener to 100 even more. */
 ipcMain.setMaxListeners(100);
 
-let window = null;
+let isWindowReady = false;
+
+const window = new BrowserWindow({
+  show: false,
+});
+window.webContents.loadURL('file://' + path.join(__dirname, '/fake-browser.html'));
 
 function genUuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -24,7 +29,7 @@ class Notification extends EventEmitter {
     super();
 
     /* Used to identity the event is trigger by self. */
-    let uuid;
+    let uuid = genUuid();
 
     this._title = opts.title;
     this._tag = opts.tag;
@@ -38,23 +43,22 @@ class Notification extends EventEmitter {
     this._onclick = null;
     this._onerror = null;
 
-    window = new BrowserWindow({
-      show: false,
+    const sendMsg = () => window.webContents.send('display-notification', {
+      title: title,
+      opts: opts,
+      uuid: uuid,
     });
-    window.loadURL('file://' + path.join(__dirname, '/fake-browser.html'));
-    window.on('ready-to-show', () => {
-      uuid = genUuid();
-      window.webContents.send('display-notification', {
-        title: title,
-        opts: opts,
-        uuid: uuid,
+    if (!isWindowReady)
+      window.on('ready-to-show', () => {
+        sendMsg();
+        isWindowReady = true;
       });
-    });
+    else
+      sendMsg();
 
     ipcMain.on('display-notification-onclick', (event, returnUuid) => {
-      if (uuid === returnUuid) {
+      if (uuid === returnUuid)
         this.emit('click');
-      }
     });
 
     ipcMain.on('display-notification-onshow', (event, returnUuid) => {
