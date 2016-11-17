@@ -8,8 +8,8 @@ const {
 /* Coz this module will add listener to global ipcMain, so increase ipcMain limit of listener to 100 even more. */
 ipcMain.setMaxListeners(100);
 
+/* Initial fake browser. */
 let isWindowReady = false;
-
 const window = new BrowserWindow({
   show: false,
 });

@@ -31,7 +31,7 @@ app.on('ready', () => {
     console.log('notification: Plz don\'t close me. T_T');
   });
 
-  console.log('What the notification just say? ' + notification.body);
+  console.log('What does the notification say? ' + notification.body);
 
   setTimeout(() => notification.close(), 2000);
 
