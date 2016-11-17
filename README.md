@@ -16,12 +16,15 @@ Actually really easy to use.
 #### main.js:
 
 ```javascript
-const { app } = require('electron');
-const Notification = require('electron-native-notification');
+const
+  { app } = require('electron'),
+  Notification = require('electron-native-notification');
 
 app.on('ready', () => {
 
-  const notification = new Notification('This is a notification!', { body: 'See? Really easy to use!' });
+  const opt = { body: 'See? Really easy to use!' };
+
+  const notification = new Notification('This is a notification!', opt);
 
   notification.onclick = () => {
     console.log('The notification is be clicked!');
