@@ -11,7 +11,7 @@ However, it's a polyfill from https://developer.mozilla.org/en-US/docs/Web/API/n
 
 ## Usage
 
-Actually really easy to use.
+Reference https://developer.mozilla.org/en-US/docs/Web/API/notification.
 
 #### main.js:
 
@@ -27,7 +27,7 @@ app.on('ready', () => {
   const notification = new Notification('This is a notification!', opt);
 
   notification.onclick = () => {
-    console.log('The notification is be clicked!');
+    console.log('On no! You touch me. It\'s hurt!!');
   };
 
   notification.on('close', () => {
