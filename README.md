@@ -1,5 +1,7 @@
 # electron-native-notification
 
+[![Build Status](https://travis-ci.org/ALiangLiang/electron-native-notification.svg?branch=master)](https://travis-ci.org/ALiangLiang/electron-native-notification "Travis CI")
+[![GitHub release](https://img.shields.io/github/release/ALiangLiang/electron-native-notification.svg)](https://github.com/ALiangLiang/electron-native-notification/releases/latest "最新版本")
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-ES6-brightgreen.svg)](https://github.com/elierotenberg/coding-styles/blob/master/es6.md)
 
 Easily display native desktop applications from your Electron main process.
@@ -24,14 +26,22 @@ app.on('ready', () => {
 
   const opt = { body: 'See? Really easy to use!' };
 
-  const notification = new Notification('This is a notification!', opt);
+  const notification = new Notification('I am a notification!', opt);
+
+  notification.on('show', () => {
+    console.log('I\'m coming~');
+  });
 
   notification.onclick = () => {
     console.log('On no! You touch me. It\'s hurt!!');
   };
 
-  notification.on('close', () => {
-    console.log('notification: Plz don\'t close me. T_T');
+  notification.addEventListener('close', () => {
+    console.log('I\'ll be back!!');
+  });
+
+  notification.addListener('error', (err) => {
+    console.error(err);
   });
 
   console.log('What does the notification say? ' + notification.body);
@@ -60,6 +70,9 @@ app.on('ready', () => {
 
 ### Methods
  - close()
+ - on() (Event register for node)
+ - addListener() (Event register for node)
+ - addEventListener() (Event register for javascript)
 
 ### Events
  - error
