@@ -76,6 +76,11 @@ class Notification extends EventEmitter {
     });
   }
 
+  /* Alias for 'on' */
+  addEventListener(eventName, listener) {
+    return this.on(eventName, listener);
+  }
+
   close() {
     window.webContents.send('close-notification');
   }

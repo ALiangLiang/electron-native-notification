@@ -64,6 +64,16 @@ describe('Event test.', function() {
         notification.on(test.type, () => setTimeout(() => done(), 500));
       });
 
+      it(`Trigger '${test.type}' event with addEventListener.`, function(done) {
+        notification = new Notification(`trigger '${test.type}' event with addEventListener.`, {
+          body: 'I\'m tester.',
+        });
+
+        setTimeout(() => notification.emit(test.type), 1000);
+
+        notification.addEventListener(test.type, () => setTimeout(() => done(), 500));
+      });
+
       it(`Trigger 'on${test.type}' property.`, function(done) {
         notification = new Notification(`trigger 'on${test.type}' property.`, {
           body: 'I\'m tester.',
