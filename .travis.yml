@@ -23,8 +23,7 @@ install:
   - npm install electron-builder@next -g
   - npm install
 
-script:
-  - npm test
+script: "echo \"no test scripts specified.\""
 
 deploy:
   provider: releases
