@@ -1,6 +1,5 @@
 # electron-native-notification
 
-[![Build Status](https://travis-ci.org/ALiangLiang/electron-native-notification.svg?branch=master)](https://travis-ci.org/ALiangLiang/electron-native-notification "Travis CI")
 [![GitHub release](https://img.shields.io/github/release/ALiangLiang/electron-native-notification.svg)](https://github.com/ALiangLiang/electron-native-notification/releases/latest "最新版本")
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-ES6-brightgreen.svg)](https://github.com/elierotenberg/coding-styles/blob/master/es6.md)
 
