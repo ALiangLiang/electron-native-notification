@@ -1,33 +1,43 @@
 <!doctype html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8">
     <title></title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <script type="text/javascript">
-        const {
-            ipcRenderer,
-        } = require('electron');
+      const {
+        ipcRenderer,
+      } = require('electron');
 
-        let notification;
+      let activeNotifications = [];
 
-        ipcRenderer.on('display-notification', (event, arg) => {
-            notification = new Notification(arg.title, arg.opts);
-            notification.onclick = () => ipcRenderer.send('display-notification-onclick', arg.uuid);
-            notification.onshow = () => ipcRenderer.send('display-notification-onshow', arg.uuid);
-            notification.onclose = () => ipcRenderer.send('display-notification-onclose', arg.uuid);
-            notification.onerror = (err) => ipcRenderer.send('display-notification-onerror', arg.uuid, err);
+      ipcRenderer.on('display-notification', (event, params) => {
+        let notification = new Notification(params.title, params.opts);
+
+        notification.onclick = () => ipcRenderer.send('display-notification-onclick', params.uuid);
+        notification.onshow = () => ipcRenderer.send('display-notification-onshow', params.uuid);
+        notification.onerror = (err) => ipcRenderer.send('display-notification-onerror', params.uuid, err);
+
+        notification.onclose = () => {
+          activeNotifications = activeNotifications.filter((item) => item.uuid !== params.uuid);
+          ipcRenderer.send('display-notification-onclose', params.uuid);
+        };
+
+        activeNotifications.push({
+          uuid: params.uuid,
+          notification,
         });
+      });
 
-        ipcRenderer.on('close-notification', (event, arg) => {
-            if (notification)
-                notification.close();
-        });
+      ipcRenderer.on('close-notification', (event, { uuid }) => {
+        for (const item of activeNotifications) {
+          if (item.uuid === uuid) {
+            item.notification.close();
+          }
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>
