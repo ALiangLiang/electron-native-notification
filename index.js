@@ -41,6 +41,7 @@ class Notification extends EventEmitter {
     this._dir = opts.dir;
     this._icon = opts.icon;
     this._timestamp = opts.timestamp;
+    this._uuid = uuid;
 
     this._onclick = null;
     this._onerror = null;
@@ -82,7 +83,7 @@ class Notification extends EventEmitter {
   }
 
   close() {
-    window.webContents.send('close-notification');
+    window.webContents.send('close-notification', { uuid: this._uuid });
   }
 
   set onclick(callback) {
