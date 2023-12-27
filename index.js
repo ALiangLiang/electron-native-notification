@@ -17,6 +17,7 @@ let
 const createFakeBrowser = () => {
   window = new BrowserWindow({
     show: false,
+    webPreferences: {nodeIntegration: true, contextIsolation: false}
   });
   window.webContents.loadURL('file://' + path.join(__dirname, '/fake-browser.html'));
   window.on('ready-to-show', () => isWindowReady = true);
